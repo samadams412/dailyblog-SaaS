@@ -36,7 +36,7 @@ export default function Profile() {
                     alt={user?.user_metadata.user_name}
                     width={50}
                     height={50}
-                    className="rounded-full ring-2 ring-red-500 hover:ring-4 transition-all cursor-pointer"
+                    className="rounded-full ring-2 ring-blue-500 hover:ring-4 transition-all cursor-pointer"
                 ></Image>
             </PopoverTrigger>
             <PopoverContent className="p-2 space-y-3 divide-y">

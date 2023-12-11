@@ -22,7 +22,7 @@ export default function Navlinks() {
         <div className='flex items-center gap-5 border-b pb-2'>
             {links.map(({href, text, Icon}, index) => {
                 return (
-                <Link href={href} key={index} className={cn("flex items-center gap-1 hover:underline transition-all", {"text-red-500" : pathname === href})}>
+                <Link href={href} key={index} className={cn("flex items-center gap-1 hover:underline transition-all", {"text-blue-500" : pathname === href})}>
                     <Icon/>/
                     {text}
                 </Link>
