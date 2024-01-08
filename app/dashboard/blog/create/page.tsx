@@ -25,40 +25,41 @@ import {
     import { BsCopy, BsSave } from "react-icons/bs";
     import { useState } from "react";
     import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
+    import { Textarea } from "@/components/ui/textarea";
     //zod schema to validate form
     const formSchema = z.object({
-    title: z.string().min(3, {
-        message: "Title must be at least 3 characters.",
-    }),
-    image_url: z.string().url({ message: "invalid url" }),
-    content: z.string().min(2, {
-        message: "Content must be at least 2 characters.",
-    }),
-    is_published: z.boolean(),
-    is_premium: z.boolean(),
+        title: z.string().min(3, {
+            message: "Title must be at least 3 characters.",
+        }),
+        image_url: z.string().url({ message: "invalid url" }),
+        content: z.string().min(2, {
+            message: "Content must be at least 2 characters.",
+        }),
+        is_published: z.boolean(),
+        is_premium: z.boolean(),
     });
 
     export default function BlogForm() {
-    const [isPreview, setIsPreview] = useState(false);
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-        mode: "all",
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-        //create default values to use for 'name' in the form
-        title: "",
-        image_url: "",
-        content: "",
-        is_published: true,
-        is_premium: false,
-        },
+        const [isPreview, setIsPreview] = useState(false);
+        // 1. Define your form.
+        const form = useForm<z.infer<typeof formSchema>>({
+            mode: "all",
+            resolver: zodResolver(formSchema),
+            defaultValues: {
+            //create default values to use for 'name' in the form
+            title: "",
+            image_url: "",
+            content: "",
+            is_published: true,
+            is_premium: false,
+            },
     });
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        // kinda a pain to set all this up for a form but atleast its type safe...
         console.log(values);
     }
     return (
@@ -128,7 +129,7 @@ import { Textarea } from "@/components/ui/textarea";
             </div>
             {/* Save Button initially disabled until form is valid */}
             <Button
-                className="flex items-center gap-"
+                className="flex items-center gap-1"
                 disabled={!form.formState.isValid}
             >
                 <BsSave />

@@ -16,6 +16,7 @@ export default function Navbar() {
             <Link href="/" className="text-2xl font-bold">DailyBlog</Link>
             <div className="h-1 w-0 group-hover:w-full transition-all bg-blue-500"></div>
         </div>
+        {/* optional chaining on user?.id if user is null or undefined the entire expression evaluates to undefined */}
         {user?.id ? <Profile/> : <LoginForm/>}
         </nav>
     );
