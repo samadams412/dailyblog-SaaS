@@ -26,6 +26,7 @@ import {
     import { useState } from "react";
     import { cn } from "@/lib/utils";
     import { Textarea } from "@/components/ui/textarea";
+import MarkdownPreview from "@/components/markdown/MarkdownPreview";
     //zod schema to validate form
     const formSchema = z.object({
         title: z.string().min(3, {
@@ -69,7 +70,7 @@ import {
             className="space-y-6 w-full border rounded-md"
         >
             <div className="p-5 flex items-center flex-wrap justify-between border-b gap-5">
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 flex-wrap">
                 <span
                 onClick={() => setIsPreview(!isPreview)}
                 role="button"
@@ -211,8 +212,8 @@ import {
                             <p>Click on Preview to see image</p>
                         </>
                         ) : (
-                        <div className="relative h-80 mt-5 border rounded-md">
-                            <Image src={form.getValues().image_url} alt="preview" fill className="object-cover object-center"/>
+                        <div className="relative h-80 mt-5 rounded-md border-2">
+                            <Image src={form.getValues().image_url} alt="preview" fill className="object-cover object-center border rounded-md"/>
                         </div>
                         )}
                     </div>
@@ -257,9 +258,8 @@ import {
                             : "w-1/2 lg:block hidden"
                         )}
                     >
-                        <h1 className="text-3xl font-medium">
-                        {form.getValues().content}
-                        </h1>
+                        <MarkdownPreview 
+                            content={form.getValues().content} />
                     </div>
                     </div>
                 </FormControl>
