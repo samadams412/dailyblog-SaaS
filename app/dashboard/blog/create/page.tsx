@@ -257,7 +257,7 @@ import MarkdownPreview from "@/components/markdown/MarkdownPreview";
                             ? "mx-auto w-full lg:w-4/5"
                             : "w-1/2 lg:block hidden"
                         )}
-                    >
+                    >   
                         <MarkdownPreview 
                             content={form.getValues().content} />
                     </div>
