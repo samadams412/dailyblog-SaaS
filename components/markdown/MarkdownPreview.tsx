@@ -6,6 +6,7 @@ import rehypeHighlight from "rehype-highlight"
 import "highlight.js/styles/atom-one-dark.css"
 import { chdir } from 'process'
 import {PiTerminalThin} from "react-icons/pi"
+import CopyButton from './CopyButton'
 export default function MarkdownPreview({content, className ="sm:p-10"}: {content: string, className?: string}) {
     return (
         <Markdown 
@@ -26,6 +27,7 @@ export default function MarkdownPreview({content, className ="sm:p-10"}: {conten
                     const id = (Math.floor(Math.random() * 100) + 1).toString();
                     if (match?.length) {
                         let Icon = PiTerminalThin;
+                        const id = (Math.floor(Math.random() * 100) + 1).toString();
                         const isMatch = icons.hasOwnProperty(match[1]);
                         if (isMatch) {
                             Icon = icons[match[1] as keyof typeof icons];
@@ -34,14 +36,15 @@ export default function MarkdownPreview({content, className ="sm:p-10"}: {conten
                         const metaValue = node?.data?.meta || ''; // Provide a default value if meta doesn't exist
                         return (
                             <div className="bg-graident-dark text-gray-300 border rounded-md">
-                                <div className='px-5 py-2 border-b'>
+                                <div className='px-5 py-2 border-b flex items-center justify-between'>
                                     <div className="flex items-center gap-2">
                                         <Icon />
                                         <span>{metaValue}</span>
                                     </div>
+                                    <CopyButton id={id}/>
                                 </div>
                                 <div className='overflow-x-auto w-full'>
-                                    <div className='p-5'>
+                                    <div className='p-5' id={id}>
                                         {children}
                                     </div>
                                 </div>
