@@ -54,6 +54,6 @@ To run the project locally, follow these steps:
 
 ## Feedback and Support
 
-We welcome any feedback or suggestions! If you encounter issues or have ideas for improvement, please open an issue in the [Issue Tracker](https://github.com/your-username/your-repo/issues).
+I welcome any feedback or suggestions! If you encounter issues or have ideas for improvement, please open an issue in the [Issue Tracker](https://github.com/samadams412/dailyblog-SaaS/issues).
 
-Happy coding! 🚀
+
