@@ -29,11 +29,14 @@ import { Textarea } from "@/components/ui/textarea";
 import MarkdownPreview from "@/components/markdown/MarkdownPreview";
 import { BlogFormSchema, BlogFormSchemaType } from "../schema";
 import { toast } from "@/components/ui/use-toast";
+import { IBlogDetail } from "@/lib/types";
 
 export default function BlogForm({
 	onHandleSubmit,
+	defaultBlog,
 }: {
 	onHandleSubmit: (data: BlogFormSchemaType) => void;
+	defaultBlog: IBlogDetail;
 }) {
 	//save button for creating blog and saving to db
 	const [isPending, startTransition] = useTransition();
@@ -45,11 +48,11 @@ export default function BlogForm({
 		resolver: zodResolver(BlogFormSchema),
 		defaultValues: {
 			//create default values to use for 'name' in the form
-			title: "",
-			content: "",
-			image_url: "",
-			is_published: true,
-			is_premium: false,
+			title: defaultBlog?.title || "",
+			content: defaultBlog?.blog_content?.content || "",
+			image_url: defaultBlog?.image_url || "",
+			is_published: defaultBlog?.is_published || true,
+			is_premium: defaultBlog?.is_premium || false,
 		},
 	});
 
