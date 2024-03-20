@@ -1,20 +1,22 @@
 import { IBlogDetail } from "./types";
 
 export const blogDeafultValue = `
-## Serendipity Chronicles: Tales from a Random Blog
+## Azeroth Chronicles: Tales from the World of Warcraft
 
-As we wrap up our adventures, let's reflect on the serendipitous moments that defined this journey. The JavaScript snippet below captures a moment of serendipity in code:
+As we embark on the journey of a Tauren Warrior, starting from humble beginnings in the verdant plains of Mulgore, let's reminisce about the moments of fortune that have illuminated our adventures. Amidst the clashes with monstrous foes and the unraveling of ancient mysteries, there are instances that sparkle with unexpected delight. The code excerpt below captures one such instance, transcribed in the language of the arcane:
 
-\`\`\`js @app/lib/serendipityMoments.js
-const serendipityMoments = [
-  "Unexpectedly meeting a fellow adventurer",
-  "Discovering a hidden gem in a random location",
-  "Finding the perfect solution when least expected"
+\`\`\`js @app/lib/fortuneMoments.js
+const fortuneMoments = [
+  "Defeating a fearsome quillboar chieftain and liberating Thunderhorn Water Well",
+  "Rescuing a stranded caravan from the relentless attacks of marauding harpies",
+  "Discovering a hidden cave filled with ancient artifacts and guarded by ferocious beasts"
 ];
 
-const randomSerendipity = serendipityMoments[Math.floor(Math.random() * serendipityMoments.length)];
-console.log(\`Serendipity at its finest: \${randomSerendipity}\`);
+const randomFortune = fortuneMoments[Math.floor(Math.random() * fortuneMoments.length)];
+console.log('Fortune shines upon us: ' + randomFortune);
 \`\`\`
+
+In the vast expanse of Azeroth, every shadow conceals the promise of adventure and every whisper carries the hint of treasure. For our Tauren Warrior, from the tranquil plains of Mulgore to the bustling Thunderhoof
 
 `;
 

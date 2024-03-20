@@ -17,6 +17,10 @@ const nextConfig = {
         {
             hostname: "source.unsplash.com",
             protocol: "https",
+        },
+        {
+            hostname: "as2.ftcdn.net",
+            protocol: "https",
         }
         ],
     },

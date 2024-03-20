@@ -4,7 +4,8 @@ const allowedDomains = [
     "avatars.githubusercontent.com",
     "images.unsplash.com",
     "unsplash.com",
-    "source.unsplash.com"
+    "source.unsplash.com",
+	"as2.ftcdn.net"
 ];
 
 //zod schema to validate form
