@@ -4,14 +4,16 @@ import BlogForm from "../../components/BlogForm";
 import { BlogFormSchemaType } from "../../schema";
 import { toast } from "@/components/ui/use-toast";
 import { createBlog } from "@/lib/actions/blog";
+import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function Page() {
+	const router = useRouter();
 	const handleCreate = async (data: BlogFormSchemaType) => {
 		const result = await createBlog(data);
 		const { error } = JSON.parse(result);
 		if (error?.message) {
 			console.log(error.message);
-			
+
 			toast({
 				title: "Failed to create blog.",
 				description: (
@@ -22,8 +24,9 @@ export default function page() {
 			});
 		} else {
 			toast({
-				title: "Successfully created" + data.title,
+				title: "Successfully created " + data.title,
 			});
+			router.push("/dashboard");
 		}
 	};
 	return <BlogForm onHandleSubmit={handleCreate} />;

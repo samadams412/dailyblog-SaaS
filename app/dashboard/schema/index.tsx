@@ -23,7 +23,7 @@ export const BlogFormSchema = z
 	.refine(
 		(data) => {
 			const image_url = data.image_url;
-            console.log(image_url);
+            
             
 			try {
 				const url = new URL(image_url);

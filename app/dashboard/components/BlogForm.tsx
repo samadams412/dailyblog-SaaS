@@ -23,19 +23,21 @@ import {
 	StarIcon,
 } from "@radix-ui/react-icons";
 import { BsCopy, BsSave } from "react-icons/bs";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import MarkdownPreview from "@/components/markdown/MarkdownPreview";
 import { BlogFormSchema, BlogFormSchemaType } from "../schema";
 import { toast } from "@/components/ui/use-toast";
 
-
 export default function BlogForm({
 	onHandleSubmit,
 }: {
 	onHandleSubmit: (data: BlogFormSchemaType) => void;
 }) {
+	//save button for creating blog and saving to db
+	const [isPending, startTransition] = useTransition();
+	//toggle preview button for the current blog
 	const [isPreview, setIsPreview] = useState(false);
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof BlogFormSchema>>({
@@ -52,13 +54,16 @@ export default function BlogForm({
 	});
 
 	// 2. Define a submit handler.
+	//Should probably rename these functions
 	function onSubmit(data: z.infer<typeof BlogFormSchema>) {
-        onHandleSubmit(data);
-        
+		startTransition(() => {
+			onHandleSubmit(data);
+		});
+
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		// kinda a pain to set all this up for a form but atleast its type safe...
-		console.log(data);
+		//console.log(data);
 	}
 	return (
 		<Form {...form}>
@@ -127,7 +132,9 @@ export default function BlogForm({
 					</div>
 					{/* Save Button initially disabled until form is valid */}
 					<Button
-						className="flex items-center gap-1"
+						className={cn("flex items-center gap-1", {
+							"animate-spin": isPending,
+						})}
 						disabled={!form.formState.isValid}
 					>
 						<BsSave />

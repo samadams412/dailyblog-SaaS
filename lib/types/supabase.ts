@@ -5,7 +5,7 @@ export type Json =
   | null
   | { [key: string]: Json | undefined }
   | Json[]
-
+//here is essentially my schema for my DB
 export type Database = {
   public: {
     Tables: {
