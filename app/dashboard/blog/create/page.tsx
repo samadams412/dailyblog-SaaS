@@ -26,7 +26,6 @@ export default function Page() {
 			toast({
 				title: "Successfully created " + data.title,
 			});
-			router.push("/dashboard");
 		}
 	};
 	return <BlogForm onHandleSubmit={handleCreate} />;

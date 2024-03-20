@@ -34,6 +34,7 @@ export async function createBlog(data: BlogFormSchemaType) {
 			.from("blog_content")
 			.insert({ blog_id: resultBlog.data.id!, content: data.content });
 		//revalidation needed
+        revalidatePath(DASHBOARD);
 		return JSON.stringify(result);
 	}
 }
