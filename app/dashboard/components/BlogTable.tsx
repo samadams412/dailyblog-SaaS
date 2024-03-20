@@ -4,8 +4,10 @@ import { PencilIcon, TrashIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 import React from "react";
-import { readBlog } from "@/lib/actions/blog";
+import { readBlog, updateBlogById } from "@/lib/actions/blog";
 import DeleteAlert from "./DeleteAlert";
+import SwitchForm from "./SwitchForm";
+import { BlogFormSchemaType } from "../schema";
 
 export default async function BlogTable() {
 	const { data: blogs } = await readBlog();
@@ -19,14 +21,20 @@ export default async function BlogTable() {
 					<h1>Premium</h1>
 					<h1>Publish</h1>
 				</div>
-                {/* map over each blog in our database */}
+				{/* map over each blog in our database */}
 				{blogs?.map((blog, index) => {
+					const updatePremium = updateBlogById.bind(null, blog.id, {
+						is_premium: !blog.is_premium,
+					} as BlogFormSchemaType);
+                    const updatePublish = updateBlogById.bind(null, blog.id, {
+						is_published: !blog.is_published,
+					} as BlogFormSchemaType);
 					return (
 						<div className="grid grid-cols-5 p-5" key={index}>
 							<h1 className="col-span-2">{blog.title}</h1>
-							<Switch checked={blog.is_premium} />
-							<Switch checked={blog.is_published} />
-							<Actions id={blog.id}/>
+							<SwitchForm checked={blog.is_premium} name="premium" onSubmit={updatePremium}/>
+							<SwitchForm checked={blog.is_published} name="publish" onSubmit={updatePublish}/>
+							<Actions id={blog.id} />
 						</div>
 					);
 				})}
@@ -36,7 +44,7 @@ export default async function BlogTable() {
 	);
 }
 // View, Delete, Edit button components inside of the BlogTable component:
-const Actions = ({id}:{id:string}) => {
+const Actions = ({ id }: { id: string }) => {
 	return (
 		<div className="flex items-center gap-2 flex-wrap">
 			<Button variant="outline" className="flex items-center gap-2">

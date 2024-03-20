@@ -27,9 +27,9 @@ export default function DeleteAlert({ id }: { id: string }) {
 			const { error } = JSON.parse(
 				await deleteBlogById(id)
 			) as PostgrestSingleResponse<null>;
-			if (error) {
+			if (error?.message) {
 				toast({
-					title: "Fail to update ",
+					title: "Failed to delete.",
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 							<code className="text-white">{error?.message}</code>
