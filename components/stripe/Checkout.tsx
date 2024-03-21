@@ -24,7 +24,7 @@ export default function Checkout() {
 		e.preventDefault();
 		startTransition(async () => {
 			const data = JSON.parse(
-				await checkout(user?.user_metadata?.email!, location.origin+pathname)
+				await checkout(user?.email!, location.origin+pathname)
 			);
             const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
             await stripe?.redirectToCheckout({sessionId: data.id})
