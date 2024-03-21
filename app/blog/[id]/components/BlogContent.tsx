@@ -3,8 +3,10 @@ import MarkdownPreview from "@/components/markdown/MarkdownPreview";
 import { Database } from "@/lib/types/supabase";
 import { createBrowserClient } from "@supabase/ssr";
 import React, { useEffect, useState } from "react";
+import BlogLoading from "./BlogLoading";
 
 export default function BlogContent({ blogId }: { blogId: string }) {
+	const [isLoading, setIsLoading] = useState(true);
 	const [blog, setBlog] = useState<{
 		blog_id: string;
 		content: string;
@@ -22,12 +24,19 @@ export default function BlogContent({ blogId }: { blogId: string }) {
 			.eq("blog_id", blogId)
 			.single();
 		setBlog(data);
+		setIsLoading(false);
 	};
-    //TODO: Change this to use React Query instead?
+
+    
+	//TODO: Change this to use React Query instead?
 	useEffect(() => {
-		readBlogContent();
+        readBlogContent();
 		// eslint-disable-next-line
 	}, []);
-
+    
+    if(isLoading){
+        return <BlogLoading/>
+    }
+    
 	return <MarkdownPreview className="sm:px-10" content={blog?.content || ""} />;
 }
