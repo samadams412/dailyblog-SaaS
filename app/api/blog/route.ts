@@ -18,6 +18,8 @@ export async function GET(request: Request) {
 		return Response.json({ ...result });
 	} else if (id) {
 		const result = await supabase.from("blog").select("*").eq("id", id).single();
+        console.log(result);
+        
 		return Response.json({ ...result });
 	}
     return Response.json({});

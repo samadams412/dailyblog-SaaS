@@ -1,6 +1,7 @@
 import { IBlog } from "@/lib/types";
 import React from "react";
 import Image from "next/image";
+import BlogContent from "./components/BlogContent";
 export default async function page({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
 		process.env.SITE_URL + "/api/blog?id=" + params.id
@@ -24,6 +25,7 @@ export default async function page({ params }: { params: { id: string } }) {
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px): 50vw, 33vw"
 				/>
 			</div>
+            <BlogContent blogId={blog?.id}/>
 		</div>
 	);
 }
