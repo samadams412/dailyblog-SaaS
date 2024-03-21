@@ -64,6 +64,7 @@ export async function updateBlogById(blogId: string, data: BlogFormSchemaType) {
 	const supabase = await createSupabaseServerClient();
 	const result = await supabase.from("blog").update(data).eq("id", blogId);
 	revalidatePath(DASHBOARD);
+	revalidatePath("/blog/"+blogId)
 	return JSON.stringify(result);
 }
 
@@ -112,6 +113,7 @@ export async function updateBlogDetail(
 			.update({ content: data.content })
 			.eq("blog_id", blogId);
 		revalidatePath(DASHBOARD);
+		//this ensurees when we edit a blog it shows the current values when viewing a single blog
 		revalidatePath("/blog/" + blogId);
 
 		return JSON.stringify(result);

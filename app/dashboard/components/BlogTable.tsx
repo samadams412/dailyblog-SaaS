@@ -21,6 +21,8 @@ export default async function BlogTable() {
 						<h1>Publish</h1>
 					</div>
 					<div className="space-y-10 p-5">
+						{/* here I use .bind() to create my new functions, when called they pass blog.id to updateBlogById
+						allows me to create new functions with pre-filled args ensuring correct data is passed */}
 						{blogs?.map((blog, index) => {
 							const updatePremium = updateBlogById.bind(
 								null,
@@ -69,7 +71,6 @@ export default async function BlogTable() {
 const Actions = ({ id }: { id: string }) => {
 	return (
 		<div className="flex items-center gap-2 md:flex-wrap">
-			{/* TODO: change to id */}
 			<Link href={`/blog/${id}`}>
 				<Button className="flex gap-2 items-center" variant="outline">
 					<EyeOpenIcon />
