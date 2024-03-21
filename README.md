@@ -25,19 +25,22 @@ Technologies Used
 </h2>
 
 - ![Next.js](https://img.shields.io/badge/Next.js-%23000000?style=flat&logo=next.js&logoColor=white)
-  A React framework for building server-rendered React applications with ease.
+  Provides server-side rendering, static site generation, & other powerful features.
 
 - ![Supabase](https://img.shields.io/badge/Supabase-%2335495e?style=flat&logo=supabase&logoColor=white)
-   It offers a cloud-hosted PostgreSQL database as a service, along with features like authentication, real-time subscriptions, and serverless functions.
+  PostgreSQL database with features like authentication, real-time subscriptions, & serverless functions.
 
-- ![Zustand](https://img.shields.io/badge/Zustand-%23E8CE42?style=flat&logo=zustand&logoColor=white)
-  A lightweight state management library for React applications, making state management simple and effective.
 
 - ![Shadcn](https://img.shields.io/badge/Shadcn-%23373737?style=flat)
-  Leveraging the power of shadows, Shadcn enhances the visual appeal of the UI, providing a sleek and modern design.
+  Enhances the visual appeal of the UI.
+
+ - ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC?style=flat&logo=tailwind-css&logoColor=white)
+    Utility-first framework providing simplicity, flexibility, and speed for responsive designs.
+- ![Zustand](https://img.shields.io/badge/Zustand-%23E8CE42?style=flat&logo=zustand&logoColor=white)
+  Lightweight state management library.
 
 - ![Stripe](https://img.shields.io/badge/Stripe-%231a1a1a?style=flat&logo=stripe&logoColor=white)
-  Integrating Stripe for seamless payment processing and creating a premium subscription for users.
+  Seamless payment processing & premium subscription for users.
 
 <h2 style="color:#4384CA">
 Features
@@ -55,23 +58,9 @@ Features
 
 6. **Responsive and Fast:** Utilizing Next.js for server-side rendering, the blog platform is responsive and optimized for performance.
 
-<h2 style="color:#4384CA">
-Getting Started
-</h2>
-
-To run the project locally, follow these steps:
-
-1. Clone the repository: `git clone https://github.com/samadams412/dailyblog-SaaS`
-2. Install dependencies: `npm install`
-3. Configure Supabase credentials and Stripe integration in the project.
-4. Run the development server: `npm run dev`
-5. **Test Card for Stripe (Test Mode):**
-
-   - **Card Number:** `4242 4242 4242 4242`
-   - **Expiration Date:** Any future date
-   - **CVC:** Any 3-digit number
-   - **ZIP:** Any 5-digit ZIP code
+### Additional features coming soon...
 
 ## Feedback and Support
 
-I welcome any feedback or suggestions! If you encounter issues or have ideas for improvement, please open an issue in the [Issue Tracker](https://github.com/samadams412/dailyblog-SaaS/issues).
+I welcome any feedback or suggestions! If you encounter issues, have ideas for improvement or additional features, please open an issue in the [Issue Tracker](https://github.com/samadams412/dailyblog-SaaS/issues).
+
