@@ -1,5 +1,5 @@
 "use server";
-
+//TODO: Double check all revalidation
 import { BlogFormSchemaType } from "@/app/dashboard/schema";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -57,6 +57,7 @@ export async function deleteBlogById(blogId: string) {
 	const supabase = await createSupabaseServerClient();
 	const result = await supabase.from("blog").delete().eq("id", blogId);
 	revalidatePath(DASHBOARD);
+	revalidatePath("/blog/" + blogId);
 	return JSON.stringify(result);
 }
 
