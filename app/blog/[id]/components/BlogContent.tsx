@@ -32,6 +32,7 @@ export default function BlogContent({ blogId }: { blogId: string }) {
 	//TODO: Change this to use React Query instead? UseEffect w/ fetch = bad
 	useEffect(() => {
         readBlogContent();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
     
     if(isLoading){

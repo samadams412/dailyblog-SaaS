@@ -3,7 +3,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import React, { useEffect } from "react";
 import { useUser } from "../lib/store/user";
 import { Database } from "@/lib/types/supabase";
-export default function sessionProvider() {
+export default function SessionProvider() {
 	const setUser = useUser((state) => state.setUser);
 
 	const supabase = createBrowserClient<Database>(
