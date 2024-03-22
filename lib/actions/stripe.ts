@@ -15,3 +15,12 @@ export async function checkout(email: string, redirectTo: string) {
 		})
 	);
 }
+
+export async function manageBillingPortal(customer_id: string) {
+	return JSON.stringify(
+		await stripe.billingPortal.sessions.create({
+			customer: customer_id,
+			return_url: process.env.SITE_URL,
+		})
+	);
+}
