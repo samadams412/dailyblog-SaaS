@@ -10,7 +10,11 @@ export default function SessionProvider() {
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 	);
-	//get the session
+	useEffect(() => {
+		readUserSession();
+		// eslint-disable-next-line
+	}, []);
+	
 	const readUserSession = async () => {
 		const { data } = await supabase.auth.getSession();
 		const { data: userInfo } = await supabase
@@ -20,10 +24,6 @@ export default function SessionProvider() {
 			.single();
 		setUser(userInfo);
 	};
-	useEffect(() => {
-		readUserSession();
-		// eslint-disable-next-line
-	}, []);
 
 	return <></>;
 }
