@@ -6,7 +6,7 @@ export default async function page({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
 		process.env.SITE_URL + "/api/blog?id=" + params.id
 	).then((res) => res.json())) as { data: IBlog };
-
+		//TODO: Create 404 page
     if (!blog?.id) {
 		return <h1 className="text-white">Not found</h1>;
 	}

@@ -3,6 +3,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { Database } from "../types/supabase";
 import { cookies } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
 
 export async function createSupabaseServerClient() {
 	const cookieStore = cookies();
@@ -17,4 +18,13 @@ export async function createSupabaseServerClient() {
 			},
 		}
 	);
+}
+
+export async function createSupabaseAdmin<Database>() {
+	return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE!, {
+		auth: {
+			autoRefreshToken: false,
+			persistSession: false,
+		},
+	});
 }

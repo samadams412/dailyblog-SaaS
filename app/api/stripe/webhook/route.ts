@@ -1,19 +1,16 @@
+import { createSupabaseAdmin } from "@/lib/supabase";
 import { headers } from "next/headers";
 import { buffer } from "node:stream/consumers";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SK_KEY!);
 
-
 const endpointSecret = process.env.ENDPOINT_SECRET!;
 
 export async function POST(req: any) {
-	
-
 	let event;
 	const rawBody = await buffer(req.body);
-	
-	
+
 	try {
 		const sig = headers().get("stripe-signature");
 
@@ -23,18 +20,18 @@ export async function POST(req: any) {
 	}
 
 	switch (event.type) {
-		case "payment_intent.succeeded":
-			const paymentIntentSucceeded = event.data.object
-			console.log(paymentIntentSucceeded);
-			
-			// const subscription = await stripe.subscriptions.list({
-			// 	customer: customer.id,
-			// });
-			// if (subscription.data.length) {
-			// 	const sub = subscription.data[0];
-			// 	//call to supabase and update user table
-			// 	await onSuccessSubscription();
-			// }
+		case "customer.updated":
+			const customer = event.data.object;
+
+			const subscription = await stripe.subscriptions.list({
+				customer: customer.id,
+			});
+			if (subscription.data.length) {
+				const sub = subscription.data[0];
+				//call to supabase and update user table
+
+				onSuccessSubscription(sub.status==="active", sub.id, customer.id, customer.email!);
+			}
 
 			break;
 
@@ -44,6 +41,20 @@ export async function POST(req: any) {
 	return Response.json({});
 }
 
-const onSuccessSubscription = async () => {
-	console.log("update user table");
+const onSuccessSubscription = async (
+	subscriptions_status: boolean,
+	stripe_customer_id: string,
+	stripe_subscription_id: string,
+	email: string
+) => {
+	const supabaseAdmin = await createSupabaseAdmin();
+	//Update user from their email
+	return await supabaseAdmin
+		.from("users")
+		.update({
+			subscriptions_status,
+			stripe_customer_id,
+			stripe_subscription_id,
+		})
+		.eq("email", email);
 };
