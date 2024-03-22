@@ -29,16 +29,16 @@ export default function BlogContent({ blogId }: { blogId: string }) {
 	};
 
     
-	//TODO: Change this to use React Query instead?
+	//TODO: Change this to use React Query instead? UseEffect w/ fetch = bad
 	useEffect(() => {
         readBlogContent();
-		// eslint-disable-next-line
 	}, []);
     
     if(isLoading){
         return <BlogLoading/>
     }
-
+	//ISSUE: Partial Data Loading leads to fetch 406 error 
+	// Not subscribed user can view static blog data  like title/img but not dynamic blog_content that is premium
     if(!blog?.content){
         return <Checkout/>
     }

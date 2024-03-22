@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 //I want to create a static page when a single blog is selected 
 //have to fetch the data from Supabase
 export async function GET(request: Request) {
-	//add Database type to help intellisense
+	
 	const supabase = createClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -18,7 +18,6 @@ export async function GET(request: Request) {
 		return Response.json({ ...result });
 	} else if (id) {
 		const result = await supabase.from("blog").select("*").eq("id", id).single();
-        console.log(result);
         
 		return Response.json({ ...result });
 	}
