@@ -4,7 +4,7 @@ SaaS Blog Platform with Stripe Integration
 
 </h1>
 
-<span>**Deployed Link:**</span> <span style="color:#4384CA">Coming Soon</span>
+**Deployed Link:**[Here](https://sams-blog-gamma.vercel.app/)
 
 <h2 style="color:#4384CA">
 Overview
@@ -42,6 +42,8 @@ Technologies Used
 - ![Stripe](https://img.shields.io/badge/Stripe-%231a1a1a?style=flat&logo=stripe&logoColor=white)
   Seamless payment processing & premium subscription for users.
 
+- [![Vercel](https://img.shields.io/badge/Vercel-%23000000?style=flat&logo=vercel&logoColor=white)](URL)
+  Seamless integration with Next.js, and efficient deployment workflow.
 <h2 style="color:#4384CA">
 Features
 </h2>
