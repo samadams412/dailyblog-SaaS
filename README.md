@@ -4,8 +4,12 @@ SaaS Blog Platform with Stripe Integration
 
 </h1>
 
-**Deployed Link:**[Here](https://sams-blog-gamma.vercel.app/)
 
+**Deployed Link:**[ Here](https://sams-blog-gamma.vercel.app/)
+
+### Upcoming changes
+
+- Add social auth for google, improve UX with static content, add header and footer components
 <h2 style="color:#4384CA">
 Overview
 </h2>
