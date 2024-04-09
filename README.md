@@ -4,8 +4,12 @@ SaaS Blog Platform with Stripe Integration
 
 </h1>
 
+![Alt Text](./assets/images/pic_1.JPG)
+
 
 **Deployed Link:**[ Here](https://sams-blog-gamma.vercel.app/)
+
+
 
 ### Upcoming changes
 

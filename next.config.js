@@ -21,6 +21,10 @@ const nextConfig = {
         {
             hostname: "as2.ftcdn.net",
             protocol: "https",
+        },
+        {
+            hostname: 'lh3.googleusercontent.com',
+            protocol: "https"
         }
         ],
     },
