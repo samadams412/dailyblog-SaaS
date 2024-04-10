@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 		images: "/site_image.JPG",
 		type: "website",
 	},
-  keywords:["Sam's Blog", "Coding"]
+	keywords: ["Sam's Blog", "Coding"],
 };
 
 export default function RootLayout({
