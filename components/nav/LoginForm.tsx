@@ -23,7 +23,7 @@ export default function LoginForm() {
 	};
 
 	return (
-		<div className="flex flex-col md:flex-row">
+		<div className="flex flex-col md:flex-row justify-center items-center gap-2 space-y-1">
 			<Button
 				variant="outline"
 				className="flex items-center gap-2"
@@ -34,6 +34,7 @@ export default function LoginForm() {
 				<SiGithub />
 				Login
 			</Button>
+            
 			<Button
 				variant="outline"
 				className="flex items-center gap-2"
