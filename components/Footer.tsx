@@ -1,4 +1,5 @@
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 import React from "react";
 
@@ -12,8 +13,12 @@ export default function Footer() {
 						<p>{"My blog to discuss all the content."}</p>
 					</div>
 					<div className="flex items-center gap-2">
-						<GitHubLogoIcon className="w-5 h-5"/>
-						<LinkedInLogoIcon className="w-5 h-5"/>
+						<Link href="https://github.com/samadams412" target="_blank">
+							<GitHubLogoIcon className="w-5 h-5" />
+						</Link>
+						<Link href="https://www.linkedin.com/in/samadams412/" target="_blank">
+						<LinkedInLogoIcon className="w-5 h-5" />
+						</Link>
 					</div>
 				</div>
 				<h1>&copy; 2024 Samuel Adams. All rights reserved.</h1>
