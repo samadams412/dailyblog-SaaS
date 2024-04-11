@@ -6,6 +6,7 @@ import Navbar from "@/components/nav/Navbar";
 import SessionProvider from "@/components/Session-provider";
 import { Toaster } from "@/components/ui/toaster";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
 					<Toaster />
 				</ThemeProvider>
 				<SessionProvider />
+			
 			</body>
 		</html>
 	);
