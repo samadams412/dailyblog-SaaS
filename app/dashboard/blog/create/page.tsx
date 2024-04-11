@@ -17,7 +17,7 @@ export default function CreateForm() {
 		const { error } = result as PostgrestSingleResponse<null>;
 		if (error?.message) {
 			toast({
-				title: "Fail to create a post 😢",
+				title: "Failed to create post.",
 				description: (
 					<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 						<code className="text-white">{error.message}</code>
@@ -26,7 +26,7 @@ export default function CreateForm() {
 			});
 		} else {
 			toast({
-				title: "Successfully create a post 🎉",
+				title: "Successfully created post.",
 				description: data.title,
 			});
 			router.push("/dashboard");
