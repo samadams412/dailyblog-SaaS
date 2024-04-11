@@ -16,7 +16,7 @@ export default function Footer() {
 						<LinkedInLogoIcon className="w-5 h-5"/>
 					</div>
 				</div>
-				<h1>&copy; 2024 Samuel Adams. All rights reserved</h1>
+				<h1>&copy; 2024 Samuel Adams. All rights reserved.</h1>
 			</div>
 		</footer>
 	);
