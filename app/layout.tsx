@@ -6,9 +6,11 @@ import Navbar from "@/components/nav/Navbar";
 import SessionProvider from "@/components/Session-provider";
 import { Toaster } from "@/components/ui/toaster";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+	metadataBase: new URL(process.env.SITE_URL!),
 	title: {
 		template: "%s | Sams Daily Blog",
 		default: "Sams Daily Blog",
@@ -45,6 +47,7 @@ export default function RootLayout({
 					<Toaster />
 				</ThemeProvider>
 				<SessionProvider />
+			
 			</body>
 		</html>
 	);

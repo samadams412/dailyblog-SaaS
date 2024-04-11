@@ -6,14 +6,15 @@ import BlogContent from "./components/BlogContent";
 //attempt at limiting data on initial load for faster times
 export async function generateStaticParams() {
 	const { data: blog } = await fetch(
-		process.env.SITE_URL + "/api/blog?id=" + "*"
+		//testing deployed
+		process.env.PROD_URL + "/api/blog?id=" + "*"
 	).then((res) => res.json());
 	return blog;
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
-		process.env.SITE_URL + "/api/blog?id=" + params.id
+		process.env.PROD_URL + "/api/blog?id=" + params.id
 	).then((res) => res.json())) as { data: IBlog };
 
 	return {
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
 export default async function page({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
-		process.env.SITE_URL + "/api/blog?id=" + params.id
+		process.env.PROD_URL + "/api/blog?id=" + params.id
 	).then((res) => res.json())) as { data: IBlog };
 	//TODO: Create 404 page
 	if (!blog?.id) {
