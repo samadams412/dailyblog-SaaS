@@ -6,6 +6,7 @@ import BlogContent from "./components/BlogContent";
 //attempt at limiting data on initial load for faster times
 export async function generateStaticParams() {
 	const { data: blog } = await fetch(
+		//testing deployed
 		process.env.PROD_URL + "/api/blog?id=" + "*"
 	).then((res) => res.json());
 	return blog;
