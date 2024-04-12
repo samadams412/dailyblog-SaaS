@@ -2,6 +2,7 @@ import { IBlog } from "@/lib/types";
 import React from "react";
 import Image from "next/image";
 import BlogContent from "./components/BlogContent";
+import NotFound from "@/components/NotFound";
 
 //attempt at limiting data on initial load for faster times
 export async function generateStaticParams() {
@@ -39,7 +40,7 @@ export default async function page({ params }: { params: { id: string } }) {
 	).then((res) => res.json())) as { data: IBlog };
 	//TODO: Create 404 page
 	if (!blog?.id) {
-		return <h1 className="text-white">Not found</h1>;
+		return <NotFound/>
 	}
 
 	return (

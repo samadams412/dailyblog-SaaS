@@ -10,7 +10,7 @@ export default function Footer() {
 				<div className="space-y-10">
 					<div className="space-y-2 w-full sm:w-96">
 						<h1 className="text-3xl font-bold">Sams Blog</h1>
-						<p>{"My blog to discuss all the content."}</p>
+						<p>Stay up to date with all news related to Gaming, Coding, and more.</p>
 					</div>
 					<div className="flex items-center gap-2">
 						<Link href="https://github.com/samadams412" target="_blank">
@@ -21,7 +21,7 @@ export default function Footer() {
 						</Link>
 					</div>
 				</div>
-				<h1>&copy; 2024 Samuel Adams. All rights reserved.</h1>
+				<h1>&copy; 2024 Samuel K. Adams. All rights reserved.</h1>
 			</div>
 		</footer>
 	);

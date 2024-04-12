@@ -19,9 +19,7 @@ export default function Navmenu() {
 
 					<MenubarContent className="lg:text-xl flex flex-col justify-center text-3xl gap-2 md:flex-row">
 						<MenubarItem className="gap-1">
-							<Link href="gaming" className="">
-								Gaming
-							</Link>
+                        <Link href="gaming">Gaming</Link>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="2em"

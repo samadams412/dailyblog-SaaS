@@ -14,11 +14,11 @@ export type IBlogDetail = {
 } | null;
 
 export type IBlog = {
+	created_at: string;
 	id: string;
 	title: string;
 	image_url: string;
 	category: string,
-	created_at: string;
 	is_premium: boolean;
 	content: string;
 	is_published: boolean;

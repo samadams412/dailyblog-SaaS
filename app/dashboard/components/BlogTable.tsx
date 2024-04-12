@@ -24,27 +24,29 @@ export default async function BlogTable() {
 						{/* here I use .bind() to create my new functions, when called they pass blog.id to updateBlogById
 						allows me to create new functions with pre-filled args ensuring correct data is passed */}
 						{blogs?.map((blog, index) => {
-							const updatePremium = updateBlogById.bind(
-								null,
-								blog.id,
-								{
-									is_premium: !blog.is_premium,
-								} as IBlog
-							);
+							const updatePremium = updateBlogById.bind(null, blog.id, {
+								is_premium: !blog.is_premium,
+							} as IBlog);
 
-							const updatePulished = updateBlogById.bind(
-								null,
-								blog.id,
-								{
-									is_published: !blog.is_published,
-								} as IBlog
-							);
+							const updatePulished = updateBlogById.bind(null, blog.id, {
+								is_published: !blog.is_published,
+							} as IBlog);
 
 							return (
 								<div className="grid grid-cols-5" key={index}>
 									<h1 className="dark:text-gray-200 col-span-2 font-lg font-medium">
 										{blog.title}
+										<p className="text-sm text-gray-400">
+											{blog &&
+												new Date(blog.created_at).toLocaleDateString("en-US", {
+													year: "numeric",
+													month: "2-digit",
+													day: "2-digit",
+												})}
+											
+										</p>
 									</h1>
+
 									<SwitchForm
 										checked={blog.is_premium}
 										onSubmit={updatePremium}
