@@ -15,11 +15,41 @@ export default function Navmenu() {
 		<div className="lg:text-xl flex items-center justify-center text-3xl mr-4 rounded-md  ring-blue-500 hover:ring-1 transition-all cursor-pointer">
 			<Menubar>
 				<MenubarMenu>
-					<MenubarTrigger className="cursor-pointer">Categories</MenubarTrigger>
+					<MenubarTrigger className="cursor-pointer">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 15 15"
+						>
+							<path
+								fill="currentColor"
+								fillRule="evenodd"
+								d="M1.5 3a.5.5 0 0 0 0 1h12a.5.5 0 0 0 0-1zM1 7.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5"
+								clipRule="evenodd"
+							></path>
+						</svg>
+					</MenubarTrigger>
 
 					<MenubarContent className="lg:text-xl flex flex-col justify-center text-3xl gap-2 md:flex-row">
 						<MenubarItem className="gap-1">
-                        <Link href="gaming">Gaming</Link>
+							<Link href="/">Home</Link>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="1.5em"
+								height="1.5em"
+								viewBox="0 0 15 15"
+							>
+								<path
+									fill="currentColor"
+									fillRule="evenodd"
+									d="M7.08.222a.6.6 0 0 1 .84 0l6.75 6.64a.6.6 0 0 1-.84.856L13 6.902V12.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5V6.902l-.83.816a.6.6 0 1 1-.84-.856zm.42 1.27L12 5.918V12h-2V8.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V12H3V5.918zM7 12h2V9H7z"
+									clipRule="evenodd"
+								></path>
+							</svg>
+						</MenubarItem>
+						<MenubarItem className="gap-1">
+							<Link href="gaming">Gaming</Link>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="2em"
