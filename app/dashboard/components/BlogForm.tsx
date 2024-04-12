@@ -205,9 +205,10 @@ export default function BlogForm({
 											"border-none text-lg font-medium leading-relaxed cursor-pointer",
 											isPreview ? "w-0 p-0" : "w-full lg:w-1/2"
 										)}
+										value="place-holder"
 									>
 										{/* Placeholder option */}
-										<option value="" disabled selected>
+										<option value="place-holder" disabled>
 											Select Category
 										</option>
 
