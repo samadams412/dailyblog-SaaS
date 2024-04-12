@@ -1,34 +1,47 @@
-import { Database } from "@/lib/types/supabase";
-import { createClient } from "@supabase/supabase-js";
+import * as z from "zod";
 
-export async function GET(request: Request) {
-	try {
-		const supabase = createClient<Database>(
-			process.env.NEXT_PUBLIC_SUPABASE_URL!,
-			process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-		);
+const allowedDomains = [
+    "avatars.githubusercontent.com",
+    "images.unsplash.com",
+    "unsplash.com",
+    "source.unsplash.com",
+    "as2.ftcdn.net"
+];
 
-		const { searchParams } = new URL(request.url);
-		const id = searchParams.get("id");
+// Define the list of allowed categories
+const allowedCategories = ["Coding", "Gaming", "Technology", "Design", "Others"];
 
-		if (id === "*") {
-			const result = await supabase.from("blog").select("id").limit(10);
-			return new Response(JSON.stringify(result));
-		} else if (id) {
-			const result = await supabase
-				.from("blog")
-				.select("*")
-				.eq("id", id)
-				.single();
-			return new Response(JSON.stringify(result));
-		}
+// Extend the existing BlogFormSchema
+export const BlogFormSchema = z.object({
+    title: z.string().min(3, {
+        message: "Title must be at least 3 characters.",
+    }),
+    image_url: z.string().url({ message: "Invalid URL" }),
+    content: z.string().min(2, {
+        message: "Content must be at least 2 characters.",
+    }),
+    is_published: z.boolean(),
+    is_premium: z.boolean(),
+    category: z.string().optional().refine((value) => {
+        // Ensure the selected category is one of the allowed categories
+        return allowedCategories.includes(value!);
+    }, {
+        message: "Invalid category selected.",
+        path: ["category"]
+    })
+})
+    .refine((data) => {
+        const image_url = data.image_url;
+        try {
+            const url = new URL(image_url);
+            return allowedDomains.includes(url.hostname);
+        } catch {
+            return false;
+        }
+    }, {
+        message: "Currently only images from Unsplash are supported.",
+        path: ["image_url"],
+    });
 
-		return new Response(JSON.stringify({}));
-	} catch (error) {
-		//console.error("Error fetching data from Supabase:", error);
-		return new Response(
-			"An error occurred while fetching data from Supabase.",
-			{ status: 500 }
-		);
-	}
-}
+// Define the type for the schema
+export type BlogFormSchemaType = z.infer<typeof BlogFormSchema>;

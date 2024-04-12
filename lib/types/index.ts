@@ -1,5 +1,6 @@
 export type IBlogDetail = {
 	created_at: string;
+	category: string,
 	id: string;
 	image_url: string;
 	is_premium: boolean;
@@ -16,6 +17,7 @@ export type IBlog = {
 	id: string;
 	title: string;
 	image_url: string;
+	category: string,
 	created_at: string;
 	is_premium: boolean;
 	content: string;
