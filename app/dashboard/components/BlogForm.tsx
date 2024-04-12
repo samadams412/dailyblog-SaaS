@@ -50,6 +50,7 @@ export default function BlogForm({
 			//create default values to use for 'name' in the form
 			title: defaultBlog?.title || "",
 			content: defaultBlog?.blog_content?.content || "",
+			category: defaultBlog?.category || "",
 			image_url: defaultBlog?.image_url || "",
 			is_published: defaultBlog?.is_published || true,
 			is_premium: defaultBlog?.is_premium || false,
@@ -185,6 +186,60 @@ export default function BlogForm({
 						</FormItem>
 					)}
 				/>
+
+				<FormField
+					control={form.control}
+					name="category"
+					render={({ field }) => (
+						<FormItem>
+							<FormControl>
+								<div
+									className={cn(
+										"p-2 w-full flex break-words gap-2",
+										isPreview ? "divide-x-0" : "divide-x"
+									)}
+								>
+									<select
+										{...field}
+										className={cn(
+											"border-none text-lg font-medium leading-relaxed cursor-pointer",
+											isPreview ? "w-0 p-0" : "w-full lg:w-1/2"
+										)}
+										value="place-holder"
+									>
+										{/* Placeholder option */}
+										<option value="place-holder" disabled>
+											Select Category
+										</option>
+
+										<option value="Gaming">Gaming</option>
+										<option value="Coding">Coding</option>
+										<option value="Technology">Technology</option>
+										<option value="Others">Others</option>
+									</select>
+									<div
+										className={cn(
+											"lg:px-10",
+											isPreview
+												? "mx-auto w-full lg:w-4/5"
+												: "w-1/2 lg:block hidden"
+										)}
+									>
+										{/* Render selected category */}
+										<h1 className="text-3xl font-medium">
+											<span>Category: </span>
+											{form.getValues().category}
+										</h1>
+									</div>
+								</div>
+							</FormControl>
+							{/* Only render validation message if user is typing */}
+							{form.getFieldState("category").invalid &&
+								form.getValues().category && <FormMessage />}
+						</FormItem>
+					)}
+				/>
+
 				{/* Blog Image Field */}
 				<FormField
 					control={form.control}
@@ -241,6 +296,7 @@ export default function BlogForm({
 						</FormItem>
 					)}
 				/>
+
 				{/* Blog Content Textarea */}
 				<FormField
 					control={form.control}

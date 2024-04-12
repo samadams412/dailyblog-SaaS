@@ -20,16 +20,16 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 	return {
 		title: blog?.title,
 		authors: {
-			name: "Samuel Adams",
+			name: "Samuel K. Adams",
 		},
 		openGraph: {
 			title: blog?.title,
 			url: process.env.SITE_URL + "/blog/" + params.id,
 			siteName: "Sam's Blog",
 			images: blog?.image_url,
-			type: "website"
+			type: "website",
 		},
-		keywords:["Sam's Blog", "Coding"]
+		keywords: ["Sam's Blog", "Coding", "Gaming", "Technology", "Design", "Finance", "Sports"],
 	};
 }
 

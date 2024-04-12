@@ -29,6 +29,7 @@ export const blogs = [
 		created_at: "2023-05-15",
 		is_premium: true,
 		is_published: true,
+		category: "Coding",
 		content: blogDeafultValue,
 	},
 	{
@@ -40,6 +41,7 @@ export const blogs = [
 		created_at: "2023-06-22",
 		is_premium: false,
 		is_published: false,
+		category: "Gaming",
 
 		content: blogDeafultValue,
 	},
@@ -52,6 +54,7 @@ export const blogs = [
 		created_at: "2023-08-10",
 		is_premium: false,
 		is_published: false,
+		category: "Technology",
 		content: blogDeafultValue,
 	},
 	{
@@ -82,6 +85,7 @@ export const defaultCreateBlog: IBlogDetail = {
 	title: "",
 	image_url: "",
 	created_at: "",
+	category: "",
 	is_premium: false,
 	is_published: false,
 	blog_content: {

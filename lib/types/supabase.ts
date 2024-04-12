@@ -14,6 +14,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string
+          category: string
           is_premium: boolean
           is_published: boolean
           title: string
@@ -21,7 +22,8 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          image_url: string
+          image_url: string,
+          category?: string,
           is_premium?: boolean
           is_published?: boolean
           title: string
@@ -30,6 +32,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string
+          category?: string
           is_premium?: boolean
           is_published?: boolean
           title?: string
