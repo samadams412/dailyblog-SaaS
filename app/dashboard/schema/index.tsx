@@ -9,7 +9,7 @@ const allowedDomains = [
 ];
 
 // Define the list of allowed categories
-const allowedCategories = ["Coding", "Gaming", "Technology", "Design", "Others"];
+const allowedCategories = ["Coding", "Gaming", "Technology", "Design", "Others", "Finance"];
 
 // Extend the existing BlogFormSchema
 export const BlogFormSchema = z.object({
