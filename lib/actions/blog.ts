@@ -65,7 +65,7 @@ export async function updateBlogById(blogId: string, data: BlogFormSchemaType) {
 	const supabase = await createSupabaseServerClient();
 	const result = await supabase.from("blog").update(data).eq("id", blogId);
 	revalidatePath(DASHBOARD);
-	revalidatePath("/blog/"+blogId)
+	revalidatePath("/blog/" + blogId);
 	return JSON.stringify(result);
 }
 
@@ -129,4 +129,24 @@ export async function readBlogAdmin() {
 		.from("blog")
 		.select("*")
 		.order("created_at", { ascending: true });
+}
+
+export async function readBlogsByCategory(category: string) {
+	const supabase = await createSupabaseServerClient();
+
+	// Query blogs filtered by the specified category
+	const { data, error } = await supabase
+		.from("blog")
+		.select("*")
+		.eq("is_published", true)
+		.eq("category", category)
+		.order("created_at", { ascending: true });
+
+	if (error) {
+		throw new Error(
+			`Error fetching blogs by category "${category}": ${error.message}`
+		);
+	}
+
+	return data;
 }

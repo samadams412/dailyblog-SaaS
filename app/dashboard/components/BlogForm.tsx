@@ -186,7 +186,7 @@ export default function BlogForm({
 						</FormItem>
 					)}
 				/>
-
+				{/* category dropdown menu */}
 				<FormField
 					control={form.control}
 					name="category"
@@ -214,6 +214,7 @@ export default function BlogForm({
 
 										<option value="Gaming">Gaming</option>
 										<option value="Coding">Coding</option>
+										<option value="Finance">Finance</option>
 										<option value="Technology">Technology</option>
 										<option value="Others">Others</option>
 									</select>
