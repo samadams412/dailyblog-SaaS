@@ -21,7 +21,7 @@ export default function Footer() {
 						</Link>
 					</div>
 				</div>
-				<h1>&copy; 2024 Samuel K. Adams. All rights reserved.</h1>
+				<h1>&copy; 2026 Samuel K. Adams. All rights reserved.</h1>
 			</div>
 		</footer>
 	);
