@@ -45,15 +45,11 @@ export async function middleware(request: NextRequest) {
         }
     );
 
-    const {data} = await supabase.auth.getSession();
-    //user data
-    //console.log(data);
-    
-    if(data.session) {
-        if(data.session.user.user_metadata.role !== "admin") {
-            return NextResponse.redirect(new URL("/", request.url))
-        }
-    } else {
+    // getUser() validates the token with Supabase Auth; getSession() only reads
+    // the cookie and must not be trusted for authorization on the server.
+    const {data: {user}} = await supabase.auth.getUser();
+
+    if(!user || user.user_metadata.role !== "admin") {
         return NextResponse.redirect(new URL("/", request.url))
     }
         
