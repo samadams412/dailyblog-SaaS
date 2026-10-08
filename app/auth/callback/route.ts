@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { type CookieOptions, createServerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 
 export async function GET(request: Request) {
 	const { searchParams, origin } = new URL(request.url);
@@ -10,26 +10,32 @@ export async function GET(request: Request) {
 
 	if (code) {
 		const cookieStore = cookies();
+		// auth responses must not be cached by a CDN
+		let cacheHeaders: Record<string, string> = {};
 		const supabase = createServerClient(
 			process.env.NEXT_PUBLIC_SUPABASE_URL!,
 			process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 			{
 				cookies: {
-					get(name: string) {
-						return cookieStore.get(name)?.value;
+					getAll() {
+						return cookieStore.getAll();
 					},
-					set(name: string, value: string, options: CookieOptions) {
-						cookieStore.set({ name, value, ...options });
-					},
-					remove(name: string, options: CookieOptions) {
-						cookieStore.delete({ name, ...options });
+					setAll(cookiesToSet, headers) {
+						cookiesToSet.forEach(({ name, value, options }) =>
+							cookieStore.set(name, value, options)
+						);
+						cacheHeaders = headers;
 					},
 				},
 			}
 		);
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 		if (!error) {
-			return NextResponse.redirect(`${origin}${next}`);
+			const response = NextResponse.redirect(`${origin}${next}`);
+			Object.entries(cacheHeaders).forEach(([key, value]) =>
+				response.headers.set(key, value)
+			);
+			return response;
 		}
 	}
 

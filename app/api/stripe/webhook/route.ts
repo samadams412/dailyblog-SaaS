@@ -16,7 +16,10 @@ export async function POST(req: any) {
 
 		event = stripe.webhooks.constructEvent(rawBody, sig!, endpointSecret);
 	} catch (err: any) {
-		return Response.json({ error: "Webhook error " + err?.message });
+		return Response.json(
+			{ error: "Webhook error " + err?.message },
+			{ status: 400 }
+		);
 	}
 
 	switch (event.type) {
@@ -37,9 +40,10 @@ export async function POST(req: any) {
 					customer.email!
 				);
 				if (error?.message) {
-					return Response.json({
-						error: "Unable to create subscription" + error.message,
-					});
+					return Response.json(
+						{ error: "Unable to create subscription" + error.message },
+						{ status: 500 }
+					);
 				}
 			}
 
@@ -48,9 +52,10 @@ export async function POST(req: any) {
 			const deleteSub = event.data.object;
 			const { error } = await onCancelSubscription(false, deleteSub.id);
 			if (error?.message) {
-				return Response.json({
-					error: "Failed to cancel subscription" + error.message,
-				});
+				return Response.json(
+					{ error: "Failed to cancel subscription" + error.message },
+					{ status: 500 }
+				);
 			}
 			break;
 

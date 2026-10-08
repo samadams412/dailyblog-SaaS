@@ -52,7 +52,7 @@ export default function BlogForm({
 			content: defaultBlog?.blog_content?.content || "",
 			category: defaultBlog?.category || "",
 			image_url: defaultBlog?.image_url || "",
-			is_published: defaultBlog?.is_published || true,
+			is_published: defaultBlog?.is_published ?? true,
 			is_premium: defaultBlog?.is_premium || false,
 		},
 	});
@@ -205,7 +205,7 @@ export default function BlogForm({
 											"border-none text-lg font-medium leading-relaxed cursor-pointer",
 											isPreview ? "w-0 p-0" : "w-full lg:w-1/2"
 										)}
-										value="place-holder"
+										value={field.value || "place-holder"}
 									>
 										{/* Placeholder option */}
 										<option value="place-holder" disabled>

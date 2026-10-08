@@ -3,7 +3,7 @@
 import { BlogFormSchemaType } from "@/app/dashboard/schema";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { Database } from "../types/supabase";
+import { Database, TablesUpdate } from "../types/supabase";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "../supabase";
 
@@ -61,7 +61,10 @@ export async function deleteBlogById(blogId: string) {
 	return JSON.stringify(result);
 }
 
-export async function updateBlogById(blogId: string, data: BlogFormSchemaType) {
+export async function updateBlogById(
+	blogId: string,
+	data: TablesUpdate<"blog">
+) {
 	const supabase = await createSupabaseServerClient();
 	const result = await supabase.from("blog").update(data).eq("id", blogId);
 	revalidatePath(DASHBOARD);
@@ -78,26 +81,6 @@ export async function readBlogDetailById(blogId: string) {
 		.single();
 }
 
-export async function updateBlogDetailById(
-	blogId: string,
-	data: BlogFormSchemaType
-) {
-	const supabase = await createSupabaseServerClient();
-	const { ["content"]: excludedKey, ...blog } = data;
-
-	const resultBlog = await supabase.from("blog").update(blog).eq("id", blogId);
-	if (resultBlog.error) {
-		return JSON.stringify(resultBlog);
-	} else {
-		const result = await supabase
-			.from("blog_content")
-			.update({ content: data.content })
-			.eq("blog_id", blogId);
-		revalidatePath(DASHBOARD);
-		return JSON.stringify(result);
-	}
-}
-
 export async function updateBlogDetail(
 	blogId: string,
 	data: BlogFormSchemaType
@@ -105,20 +88,49 @@ export async function updateBlogDetail(
 	const { ["content"]: excludedKey, ...blog } = data;
 
 	const supabase = await createSupabaseServerClient();
-	const resultBlog = await supabase.from("blog").update(blog).eq("id", blogId);
+	// .select() makes Supabase return the rows it changed. An update blocked by
+	// RLS (or matching nothing) otherwise comes back as error: null, data: null.
+	const resultBlog = await supabase
+		.from("blog")
+		.update(blog)
+		.eq("id", blogId)
+		.select("id");
 	if (resultBlog.error) {
 		return JSON.stringify(resultBlog);
-	} else {
-		const result = await supabase
-			.from("blog_content")
-			.update({ content: data.content })
-			.eq("blog_id", blogId);
-		revalidatePath(DASHBOARD);
-		//this ensurees when we edit a blog it shows the current values when viewing a single blog
-		revalidatePath("/blog/" + blogId);
+	}
+	if (!resultBlog.data?.length) {
+		return noRowsUpdated("Blog metadata was not saved. No rows were updated.");
+	}
 
+	//this ensurees when we edit a blog it shows the current values when viewing a single blog
+	revalidatePath(DASHBOARD);
+	revalidatePath("/blog/" + blogId);
+
+	const result = await supabase
+		.from("blog_content")
+		.update({ content: data.content })
+		.eq("blog_id", blogId)
+		.select("blog_id");
+	if (result.error) {
 		return JSON.stringify(result);
 	}
+	if (!result.data?.length) {
+		return noRowsUpdated(
+			"Title and settings were saved, but the blog content was not. No rows were updated."
+		);
+	}
+
+	return JSON.stringify(result);
+}
+
+// Shaped like a PostgrestSingleResponse so callers can keep checking `.error`.
+function noRowsUpdated(message: string) {
+	return JSON.stringify({
+		data: null,
+		error: { message, details: "", hint: "", code: "NO_ROWS_UPDATED" },
+		status: 0,
+		statusText: "",
+	});
 }
 
 export async function readBlogAdmin() {
