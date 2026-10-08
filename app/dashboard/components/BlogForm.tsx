@@ -52,7 +52,7 @@ export default function BlogForm({
 			content: defaultBlog?.blog_content?.content || "",
 			category: defaultBlog?.category || "",
 			image_url: defaultBlog?.image_url || "",
-			is_published: defaultBlog?.is_published || true,
+			is_published: defaultBlog?.is_published ?? true,
 			is_premium: defaultBlog?.is_premium || false,
 		},
 	});
