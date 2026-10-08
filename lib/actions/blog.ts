@@ -3,7 +3,7 @@
 import { BlogFormSchemaType } from "@/app/dashboard/schema";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { Database } from "../types/supabase";
+import { Database, TablesUpdate } from "../types/supabase";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "../supabase";
 
@@ -61,7 +61,10 @@ export async function deleteBlogById(blogId: string) {
 	return JSON.stringify(result);
 }
 
-export async function updateBlogById(blogId: string, data: BlogFormSchemaType) {
+export async function updateBlogById(
+	blogId: string,
+	data: TablesUpdate<"blog">
+) {
 	const supabase = await createSupabaseServerClient();
 	const result = await supabase.from("blog").update(data).eq("id", blogId);
 	revalidatePath(DASHBOARD);
