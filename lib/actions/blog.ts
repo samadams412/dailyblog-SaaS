@@ -9,6 +9,23 @@ import { createSupabaseServerClient } from "../supabase";
 
 const DASHBOARD = "/dashboard";
 
+// Server Actions are callable directly over the network regardless of which
+// page defines them, so middleware's /dashboard route check does not protect
+// these — each admin-only action must check for itself.
+async function requireAdmin() {
+	const supabase = await createSupabaseServerClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	const isAdmin = !!user && user.user_metadata.role === "admin";
+	return {
+		supabase,
+		error: isAdmin
+			? null
+			: { message: "Not authorized.", details: "", hint: "", code: "NOT_AUTHORIZED" },
+	};
+}
+
 // const supabase = createServerClient<Database>(
 // 	process.env.NEXT_PUBLIC_SUPABASE_URL!,
 // 	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -22,8 +39,12 @@ const DASHBOARD = "/dashboard";
 // );
 
 export async function createBlog(data: BlogFormSchemaType) {
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return JSON.stringify({ data: null, error: authError, status: 0, statusText: "" });
+	}
+
 	//need to exclude content because we dont have it
-	const supabase = await createSupabaseServerClient();
 	const { ["content"]: excludedKey, ...blog } = data;
 	const resultBlog = await supabase
 		.from("blog")
@@ -54,7 +75,11 @@ export async function readBlog() {
 }
 
 export async function deleteBlogById(blogId: string) {
-	const supabase = await createSupabaseServerClient();
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return JSON.stringify({ data: null, error: authError, status: 0, statusText: "" });
+	}
+
 	const result = await supabase.from("blog").delete().eq("id", blogId);
 	revalidatePath(DASHBOARD);
 	revalidatePath("/blog/" + blogId);
@@ -65,7 +90,11 @@ export async function updateBlogById(
 	blogId: string,
 	data: TablesUpdate<"blog">
 ) {
-	const supabase = await createSupabaseServerClient();
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return JSON.stringify({ data: null, error: authError, status: 0, statusText: "" });
+	}
+
 	const result = await supabase.from("blog").update(data).eq("id", blogId);
 	revalidatePath(DASHBOARD);
 	revalidatePath("/blog/" + blogId);
@@ -85,9 +114,13 @@ export async function updateBlogDetail(
 	blogId: string,
 	data: BlogFormSchemaType
 ) {
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return JSON.stringify({ data: null, error: authError, status: 0, statusText: "" });
+	}
+
 	const { ["content"]: excludedKey, ...blog } = data;
 
-	const supabase = await createSupabaseServerClient();
 	// .select() makes Supabase return the rows it changed. An update blocked by
 	// RLS (or matching nothing) otherwise comes back as error: null, data: null.
 	const resultBlog = await supabase
@@ -134,9 +167,13 @@ function noRowsUpdated(message: string) {
 }
 
 export async function readBlogAdmin() {
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return { data: null, error: authError };
+	}
+
 	//read from blog table select all and sort ascending by time created
 	//starting to like supabase
-	const supabase = await createSupabaseServerClient();
 	return supabase
 		.from("blog")
 		.select("*")
