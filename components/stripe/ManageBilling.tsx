@@ -3,18 +3,16 @@ import React, { useTransition } from "react";
 import { Button } from "../ui/button";
 import { BackpackIcon } from "@radix-ui/react-icons";
 import { manageBillingPortal } from "@/lib/actions/stripe";
-import { useUser } from "@/lib/store/user";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 export default function ManageBilling() {
 	const [isPending, startTransition] = useTransition();
-	const user = useUser((state) => state.user);
 	const onSubmit = (e: any) => {
 		e.preventDefault();
 		startTransition(async () => {
             
             
-			const data = JSON.parse(await manageBillingPortal(user?.stripe_customer_id!));
+			const data = JSON.parse(await manageBillingPortal());
 			//redirect to billing portal
 			window.location.href = data.url;
 		});

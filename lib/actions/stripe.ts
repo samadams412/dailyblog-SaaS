@@ -1,6 +1,7 @@
 "use server";
 
 import Stripe from "stripe";
+import { createSupabaseServerClient } from "../supabase";
 
 const stripe = new Stripe(process.env.STRIPE_SK_KEY!);
 
@@ -16,10 +17,29 @@ export async function checkout(email: string, redirectTo: string) {
 	);
 }
 
-export async function manageBillingPortal(customer_id: string) {
+// Looks up the caller's own stripe_customer_id instead of trusting an argument,
+// so one user can't open the billing portal for another user's Stripe customer.
+export async function manageBillingPortal() {
+	const supabase = await createSupabaseServerClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	if (!user) {
+		return JSON.stringify({ error: "Not authorized." });
+	}
+
+	const { data: dbUser } = await supabase
+		.from("users")
+		.select("stripe_customer_id")
+		.eq("id", user.id)
+		.single();
+	if (!dbUser?.stripe_customer_id) {
+		return JSON.stringify({ error: "No billing account found." });
+	}
+
 	return JSON.stringify(
 		await stripe.billingPortal.sessions.create({
-			customer: customer_id,
+			customer: dbUser.stripe_customer_id,
 			return_url: process.env.SITE_URL,
 		})
 	);
