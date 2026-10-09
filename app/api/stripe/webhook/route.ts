@@ -23,41 +23,91 @@ export async function POST(req: any) {
 	}
 
 	switch (event.type) {
-		case "customer.updated":
-			const customer = event.data.object;
-
-			const subscription = await stripe.subscriptions.list({
-				customer: customer.id,
-			});
-			if (subscription.data.length) {
-				const sub = subscription.data[0];
-				//call to supabase and update user table
-
-				const { error } = await onSuccessSubscription(
-					sub.status === "active",
-					sub.id,
-					customer.id,
-					customer.email!
-				);
-				if (error?.message) {
-					return Response.json(
-						{ error: "Unable to create subscription" + error.message },
-						{ status: 500 }
-					);
-				}
+		case "checkout.session.completed": {
+			const session = event.data.object as Stripe.Checkout.Session;
+			if (session.mode !== "subscription" || !session.subscription) {
+				break;
+			}
+			const email = session.customer_details?.email ?? session.customer_email;
+			if (!email) {
+				console.error(`checkout.session.completed ${session.id} has no email on file`);
+				break;
 			}
 
-			break;
-		case "customer.subscription.deleted":
-			const deleteSub = event.data.object;
-			const { error } = await onCancelSubscription(false, deleteSub.id);
+			const { error, data } = await onSuccessSubscription(
+				true,
+				session.subscription as string,
+				session.customer as string,
+				email
+			);
 			if (error?.message) {
 				return Response.json(
-					{ error: "Failed to cancel subscription" + error.message },
+					{ error: "Unable to activate subscription: " + error.message },
+					{ status: 500 }
+				);
+			}
+			if (!data?.length) {
+				console.error(`No user row matched email ${email} for checkout session ${session.id}`);
+				return Response.json(
+					{ error: "No user matched this checkout session's email." },
 					{ status: 500 }
 				);
 			}
 			break;
+		}
+
+		case "customer.subscription.updated": {
+			const sub = event.data.object as Stripe.Subscription;
+			const customer = await stripe.customers.retrieve(sub.customer as string);
+			if (customer.deleted) {
+				console.error(`Stripe customer ${sub.customer} was deleted; cannot sync subscription ${sub.id}`);
+				break;
+			}
+			if (!customer.email) {
+				console.error(`Stripe customer ${sub.customer} has no email; cannot sync subscription ${sub.id}`);
+				break;
+			}
+
+			const { error, data } = await onSuccessSubscription(
+				sub.status === "active",
+				sub.id,
+				sub.customer as string,
+				customer.email
+			);
+			if (error?.message) {
+				return Response.json(
+					{ error: "Unable to sync subscription: " + error.message },
+					{ status: 500 }
+				);
+			}
+			if (!data?.length) {
+				console.error(`No user row matched email ${customer.email} for subscription ${sub.id}`);
+				return Response.json(
+					{ error: "No user matched this subscription's email." },
+					{ status: 500 }
+				);
+			}
+			break;
+		}
+
+		case "customer.subscription.deleted": {
+			const deleteSub = event.data.object as Stripe.Subscription;
+			const { error, data } = await onCancelSubscription(false, deleteSub.id);
+			if (error?.message) {
+				return Response.json(
+					{ error: "Failed to cancel subscription: " + error.message },
+					{ status: 500 }
+				);
+			}
+			if (!data?.length) {
+				console.error(`No user row matched subscription ${deleteSub.id} for cancellation`);
+				return Response.json(
+					{ error: "No user matched this subscription for cancellation." },
+					{ status: 500 }
+				);
+			}
+			break;
+		}
 
 		default:
 			console.log(`Unhandled event type ${event.type}`);
@@ -77,7 +127,8 @@ const onCancelSubscription = async (
 			stripe_customer_id: null,
 			stripe_subscription_id: null,
 		})
-		.eq("stripe_subscription_id", sub_id);
+		.eq("stripe_subscription_id", sub_id)
+		.select("id");
 };
 
 const onSuccessSubscription = async (
@@ -95,5 +146,6 @@ const onSuccessSubscription = async (
 			stripe_subscription_id,
 			stripe_customer_id,
 		})
-		.eq("email", email);
+		.eq("email", email)
+		.select("id");
 };
