@@ -8,6 +8,7 @@ import Navmenu from "./Navmenu";
 
 export default function Navbar() {
 	const user = useUser((state) => state.user);
+	const isUserLoading = useUser((state) => state.isLoading);
 
 	return (
 		<nav className="flex items-center justify-between px-4 py-2 bg-gray-900 text-white">
@@ -19,7 +20,7 @@ export default function Navbar() {
 			</div>
 			<Navmenu />
 			{/* optional chaining on user?.id if user is null or undefined the entire expression evaluates to undefined */}
-			{user?.id ? <Profile /> : <LoginForm />}
+			{isUserLoading ? null : user?.id ? <Profile /> : <LoginForm />}
 		</nav>
 	);
 }
