@@ -76,7 +76,7 @@ export async function readBlog() {
 		.from("blog")
 		.select("*")
 		.eq("is_published", true)
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 }
 
 export async function deleteBlogById(blogId: string) {
@@ -182,7 +182,7 @@ export async function readBlogAdmin() {
 	return supabase
 		.from("blog")
 		.select("*")
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 }
 
 export async function readBlogsByCategory(category: string) {
@@ -194,7 +194,7 @@ export async function readBlogsByCategory(category: string) {
 		.select("*")
 		.eq("is_published", true)
 		.eq("category", category)
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 
 	if (error) {
 		throw new Error(
