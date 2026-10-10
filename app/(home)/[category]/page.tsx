@@ -1,11 +1,24 @@
 import { readBlogsByCategory } from "@/lib/actions/blog";
+import { CATEGORIES } from "@/lib/categories";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default async function Page() {
-	const category = "Gaming"; 
+export function generateStaticParams() {
+	return CATEGORIES.map((c) => ({ category: c.slug }));
+}
 
-	let blogs = await readBlogsByCategory(category);
+export default async function Page({
+	params,
+}: {
+	params: { category: string };
+}) {
+	const category = CATEGORIES.find((c) => c.slug === params.category);
+	if (!category) {
+		notFound();
+	}
+
+	let blogs = await readBlogsByCategory(category.label);
 
 	if (!blogs) {
 		blogs = [];

@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { CATEGORIES } from "@/lib/categories";
 
 const allowedDomains = [
     "avatars.githubusercontent.com",
@@ -8,8 +9,7 @@ const allowedDomains = [
     "as2.ftcdn.net"
 ];
 
-// Define the list of allowed categories
-const allowedCategories = ["Coding", "Gaming", "Technology", "Design", "Others", "Finance"];
+const allowedCategories: string[] = CATEGORIES.map((c) => c.label);
 
 // Extend the existing BlogFormSchema
 export const BlogFormSchema = z.object({

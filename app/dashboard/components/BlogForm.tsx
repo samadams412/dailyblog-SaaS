@@ -30,6 +30,7 @@ import MarkdownPreview from "@/components/markdown/MarkdownPreview";
 import { BlogFormSchema, BlogFormSchemaType } from "../schema";
 import { toast } from "@/components/ui/use-toast";
 import { IBlogDetail } from "@/lib/types";
+import { CATEGORIES } from "@/lib/categories";
 
 export default function BlogForm({
 	onHandleSubmit,
@@ -212,11 +213,11 @@ export default function BlogForm({
 											Select Category
 										</option>
 
-										<option value="Gaming">Gaming</option>
-										<option value="Coding">Coding</option>
-										<option value="Finance">Finance</option>
-										<option value="Technology">Technology</option>
-										<option value="Others">Others</option>
+										{CATEGORIES.map((c) => (
+											<option key={c.slug} value={c.label}>
+												{c.label}
+											</option>
+										))}
 									</select>
 									<div
 										className={cn(

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Cpu, LayoutGrid } from "lucide-react";
 import {
 	Menubar,
 	MenubarContent,
@@ -111,6 +112,18 @@ export default function Navmenu() {
 										></path>
 									</g>
 								</svg>
+							</Link>
+						</MenubarItem>
+						<MenubarItem asChild className="gap-1">
+							<Link href="/technology" className="flex items-center gap-1 w-full">
+								Technology
+								<Cpu className="w-6 h-6" />
+							</Link>
+						</MenubarItem>
+						<MenubarItem asChild className="gap-1">
+							<Link href="/others" className="flex items-center gap-1 w-full">
+								Others
+								<LayoutGrid className="w-6 h-6" />
 							</Link>
 						</MenubarItem>
 					</MenubarContent>
