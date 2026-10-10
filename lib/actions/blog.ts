@@ -17,7 +17,12 @@ async function requireAdmin() {
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
-	const isAdmin = !!user && user.user_metadata.role === "admin";
+	// Read the role from public.users (what RLS's is_admin() uses), never
+	// user_metadata: users can rewrite their own metadata via auth.updateUser().
+	const { data: profile } = user
+		? await supabase.from("users").select("role").eq("id", user.id).single()
+		: { data: null };
+	const isAdmin = profile?.role === "admin";
 	return {
 		supabase,
 		error: isAdmin
@@ -71,7 +76,7 @@ export async function readBlog() {
 		.from("blog")
 		.select("*")
 		.eq("is_published", true)
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 }
 
 export async function deleteBlogById(blogId: string) {
@@ -177,7 +182,7 @@ export async function readBlogAdmin() {
 	return supabase
 		.from("blog")
 		.select("*")
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 }
 
 export async function readBlogsByCategory(category: string) {
@@ -189,7 +194,7 @@ export async function readBlogsByCategory(category: string) {
 		.select("*")
 		.eq("is_published", true)
 		.eq("category", category)
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 
 	if (error) {
 		throw new Error(

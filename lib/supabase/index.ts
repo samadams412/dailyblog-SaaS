@@ -30,8 +30,8 @@ export async function createSupabaseServerClient() {
 	);
 }
 
-export async function createSupabaseAdmin<Database>() {
-	return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE!, {
+export async function createSupabaseAdmin() {
+	return createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE!, {
 		auth: {
 			autoRefreshToken: false,
 			persistSession: false,
