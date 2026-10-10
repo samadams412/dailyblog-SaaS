@@ -10,7 +10,12 @@ import { loadStripe } from "@stripe/stripe-js";
 export default function Checkout() {
 	const pathname = usePathname();
 	const user = useUser((state) => state.user);
+	const isUserLoading = useUser((state) => state.isLoading);
 	const [isPending, startTransition] = useTransition();
+
+	if (isUserLoading) {
+		return <div className="h-96" />;
+	}
 
 	if (!user?.id) {
 		return (
