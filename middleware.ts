@@ -42,7 +42,12 @@ export async function middleware(request: NextRequest) {
     // the cookie and must not be trusted for authorization on the server.
     const {data: {user}} = await supabase.auth.getUser();
 
-    if(!user || user.user_metadata.role !== "admin") {
+    // Role comes from public.users, not user_metadata, which users can edit themselves.
+    const { data: profile } = user
+        ? await supabase.from("users").select("role").eq("id", user.id).single()
+        : { data: null };
+
+    if(!profile || profile.role !== "admin") {
         return NextResponse.redirect(new URL("/", request.url))
     }
 
