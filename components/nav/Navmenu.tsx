@@ -49,7 +49,7 @@ export default function Navmenu() {
 							</svg>
 						</MenubarItem>
 						<MenubarItem className="gap-1">
-							<Link href="gaming">Gaming</Link>
+							<Link href="/gaming">Gaming</Link>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="2em"
@@ -66,7 +66,7 @@ export default function Navmenu() {
 
 						{/* <MenubarSeparator /> */}
 						<MenubarItem className="gap-1">
-							<Link href="coding">Coding</Link>
+							<Link href="/coding">Coding</Link>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="1.5em"
@@ -88,7 +88,7 @@ export default function Navmenu() {
 							</svg>
 						</MenubarItem>
 						<MenubarItem className="gap-1">
-							<Link href="finance" className="">
+							<Link href="/finance" className="">
 								Finance
 							</Link>
 							<svg
