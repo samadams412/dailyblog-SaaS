@@ -37,13 +37,13 @@ export default function Profile() {
 						alt={user?.display_name || ""}
 						width={50}
 						height={50}
-						className="rounded-full ring-2 ring-blue-500 hover:ring-4 transition-all cursor-pointer"
+						className="rounded-full ring-2 ring-primary hover:ring-4 transition-all cursor-pointer"
 					></Image>
 				</PopoverTrigger>
 				<PopoverContent className="p-2 space-y-3 divide-y">
 					<div className="px-4 text-sm">
 						<p>{user?.display_name}</p>
-						<p className="text-gray-500">{user?.email}</p>
+						<p className="text-muted-foreground">{user?.email}</p>
 					</div>
 					{isAdmin && (
 						<Link href="/dashboard" className="block">

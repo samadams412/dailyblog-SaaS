@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Public_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/nav/Navbar";
@@ -7,7 +7,15 @@ import SessionProvider from "@/components/Session-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 
-const inter = Inter({ subsets: ["latin"] });
+const publicSans = Public_Sans({
+	subsets: ["latin"],
+	variable: "--font-sans",
+});
+const spaceGrotesk = Space_Grotesk({
+	subsets: ["latin"],
+	weight: ["500", "600", "700"],
+	variable: "--font-display",
+});
 
 export const metadata: Metadata = {
 	metadataBase: new URL(process.env.SITE_URL!),
@@ -33,10 +41,10 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={inter.className}>
+			<body className={`${publicSans.variable} ${spaceGrotesk.variable} font-sans`}>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="dark"
+					defaultTheme="system"
 					enableSystem
 					disableTransitionOnChange
 				>

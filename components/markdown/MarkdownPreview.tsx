@@ -17,25 +17,25 @@ export default function MarkdownPreview({
 }) {
 	return (
 		<Markdown
-			className={cn("dark:text-gray-200 space-y-8", className)}
+			className={cn("text-foreground space-y-8", className)}
 			rehypePlugins={[rehypeHighlight]}
 			components={{
 				h1: ({ node, ...props }) => {
-					return <h1 {...props} className="text-3xl font-bold" />;
+					return <h1 {...props} className="text-3xl font-display font-bold" />;
 				},
 				h2: ({ node, ...props }) => {
 					return (
-						<h1
+						<h2
 							{...props}
-							className="text-2xl font-bold mt-10 mb-10"
+							className="text-2xl font-display font-bold mt-10 mb-10"
 						/>
 					);
 				},
 				h3: ({ node, ...props }) => {
 					return (
-						<h1
+						<h3
 							{...props}
-							className="text-xl font-bold mt-10 mb-10"
+							className="text-xl font-display font-bold mt-10 mb-10"
 						/>
 					);
 				},
@@ -54,11 +54,11 @@ export default function MarkdownPreview({
 						}
 
 						return (
-							<div className=" bg-gradient-dark text-gray-300 border-[0.5px] rounded-md border-zinc-500">
-								<div className="flex items-center justify-between px-5 py-2 border-b-[0.5px] border-zinc-500">
+							<div className=" bg-card text-card-foreground border-[0.5px] rounded-md border-border">
+								<div className="flex items-center justify-between px-5 py-2 border-b-[0.5px] border-border">
 									<div className="flex items-center gap-2">
 										<Icon />
-										<p className="text-sm text-gray-400">
+										<p className="text-sm text-muted-foreground">
 											{/* @ts-ignore  */}
 											{node?.data?.meta}
 										</p>
@@ -76,7 +76,7 @@ export default function MarkdownPreview({
 						return (
 							// TODO: convert to code block
 							<code
-								className="text-lg break-words bg-zinc-700 px-1 rounded-sm"
+								className="text-lg break-words bg-muted px-1 rounded-sm"
 								{...props}
 							>
 								{children}

@@ -33,7 +33,7 @@ export default function SwitchForm({
 
 	return (
 		<form onSubmit={handleOnSubmit}>
-			<Switch checked={checked} type="submit" className="bg-blue-500"/>
+			<Switch checked={checked} type="submit"/>
 		</form>
 	);
 }

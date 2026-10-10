@@ -82,7 +82,7 @@ export default function BlogForm({
 							onClick={() => setIsPreview(!isPreview)}
 							role="button"
 							tabIndex={0}
-							className="flex items-center gap-1 border bg-zinc-700 p-2 rounded-md hover:ring-2 hover:ring-zinc-400 transition-all"
+							className="flex items-center gap-1 border bg-secondary p-2 rounded-md hover:ring-2 hover:ring-ring transition-all"
 						>
 							{isPreview ? (
 								<>
@@ -102,7 +102,7 @@ export default function BlogForm({
 							name="is_premium"
 							render={({ field }) => (
 								<FormItem>
-									<FormControl className="flex gap-1 border bg-zinc-700 p-2 rounded-md items-center">
+									<FormControl className="flex gap-1 border bg-secondary p-2 rounded-md items-center">
 										<div>
 											<StarIcon />
 											<span>Premium</span>
@@ -121,7 +121,7 @@ export default function BlogForm({
 							name="is_published"
 							render={({ field }) => (
 								<FormItem>
-									<FormControl className="flex gap-1 border bg-zinc-700 p-2 rounded-md items-center">
+									<FormControl className="flex gap-1 border bg-secondary p-2 rounded-md items-center">
 										<div>
 											<RocketIcon />
 											<span>Publish</span>

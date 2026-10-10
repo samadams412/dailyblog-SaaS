@@ -2,6 +2,7 @@ import { IBlog } from "@/lib/types";
 import React from "react";
 import Image from "next/image";
 import BlogContent from "./components/BlogContent";
+import ShareButtons from "@/components/ShareButtons";
 import { notFound } from "next/navigation";
 import { readBlog } from "@/lib/actions/blog"; // import database reader
 import { createClient } from "@supabase/supabase-js"; // Import standard client
@@ -63,10 +64,14 @@ export default async function page({ params }: { params: { id: string } }) {
 	return (
 		<div className="max-w-5xl mx-auto min-h-screen pt-10 space-y-10">
 			<div className="sm:px-10 space-y-5">
-				<h1 className="text-3xl font-bold">{blog?.title}</h1>
-				<p className="text-sm text-gray-400">
+				<h1 className="text-3xl font-display font-bold">{blog?.title}</h1>
+				<p className="text-sm text-muted-foreground">
 					{new Date(blog?.created_at || "").toDateString()}
 				</p>
+				<ShareButtons
+					title={blog?.title || ""}
+					url={`${process.env.SITE_URL}/blog/${blog?.id}`}
+				/>
 			</div>
 			<div className="w-full h-96 relative">
 				<Image
@@ -74,7 +79,7 @@ export default async function page({ params }: { params: { id: string } }) {
 					src={blog?.image_url || "/"}
 					alt="cover"
 					fill
-					className="object-cover object-center rounded-md border"
+					className="object-cover object-center rounded-md border border-border"
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px): 50vw, 33vw"
 				/>
 			</div>

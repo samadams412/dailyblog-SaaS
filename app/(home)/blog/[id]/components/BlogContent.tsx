@@ -46,7 +46,7 @@ export default function BlogContent({ blogId }: { blogId: string }) {
 	if (loadFailed) {
 		return (
 			<div className="flex items-center justify-center h-96 text-center">
-				<p>Something went wrong loading this post. Please try again.</p>
+				<p className="text-muted-foreground">Something went wrong loading this post. Please try again.</p>
 			</div>
 		);
 	}

@@ -22,12 +22,12 @@ export default function Navlinks() {
 ]
 
     return (
-        <div className='flex items-center gap-5 border-b pb-2'>
+        <div className='flex items-center gap-5 border-b border-border pb-2'>
             {links.map(({href, text, Icon}, index) => {
                 return (
-                <Link href={href} key={index} className={cn("flex items-center gap-1 hover:underline transition-all", 
-                // set the current pathname link to be text blue
-                {"text-blue-500" : pathname === href})}>
+                <Link href={href} key={index} className={cn("flex items-center gap-1 hover:underline transition-all",
+                // mark the current pathname link active
+                {"text-primary" : pathname === href})}>
                     <Icon/>/
                     {text}
                 </Link>
