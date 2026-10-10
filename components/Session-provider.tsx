@@ -16,13 +16,20 @@ export default function SessionProvider() {
 	}, []);
 	
 	const readUserSession = async () => {
-		const { data } = await supabase.auth.getSession();
-		const { data: userInfo } = await supabase
-			.from("users")
-			.select("*")
-			.eq("id", data.session?.user.id!)
-			.single();
-		setUser(userInfo);
+		try {
+			const { data } = await supabase.auth.getSession();
+			const { data: userInfo } = await supabase
+				.from("users")
+				.select("*")
+				.eq("id", data.session?.user.id!)
+				.single();
+			setUser(userInfo);
+		} catch {
+			// Treat a failed session check as logged-out rather than hanging
+			// forever — safer than risking paywalled content being shown to
+			// someone we couldn't actually verify.
+			setUser(null);
+		}
 	};
 
 	return <></>;
