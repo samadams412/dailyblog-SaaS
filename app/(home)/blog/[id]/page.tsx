@@ -2,7 +2,7 @@ import { IBlog } from "@/lib/types";
 import React from "react";
 import Image from "next/image";
 import BlogContent from "./components/BlogContent";
-import NotFound from "@/components/NotFound";
+import { notFound } from "next/navigation";
 import { readBlog } from "@/lib/actions/blog"; // import database reader
 import { createClient } from "@supabase/supabase-js"; // Import standard client
 
@@ -56,9 +56,8 @@ export default async function page({ params }: { params: { id: string } }) {
 	const { data: blog } = (await fetch(
 		process.env.PROD_URL + "/api/blog?id=" + params.id
 	).then((res) => res.json())) as { data: IBlog };
-	//TODO: Create 404 page
 	if (!blog?.id) {
-		return <NotFound/>
+		notFound();
 	}
 
 	return (
