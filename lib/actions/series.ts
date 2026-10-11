@@ -81,6 +81,36 @@ export async function readSeriesById(seriesId: string) {
 	return supabase.from("series").select("*").eq("id", seriesId).single();
 }
 
+export async function readSeriesBySlug(slug: string) {
+	const supabase = await createSupabaseServerClient();
+	return supabase.from("series").select("*").eq("slug", slug).single();
+}
+
+// One request for the /series index: every series plus its published posts,
+// used to derive a post count and a cover-image preview per series.
+export async function readSeriesWithPreview() {
+	const supabase = await createSupabaseServerClient();
+	const { data, error } = await supabase
+		.from("series")
+		.select("*, blog(id, title, image_url, series_order, is_published)")
+		.order("created_at", { ascending: false });
+
+	if (error) {
+		throw new Error(`Error fetching series index: ${error.message}`);
+	}
+
+	return data.map(({ blog, ...series }) => {
+		const publishedPosts = blog
+			.filter((post) => post.is_published)
+			.sort((a, b) => (a.series_order ?? Infinity) - (b.series_order ?? Infinity));
+		return {
+			...series,
+			postCount: publishedPosts.length,
+			previewPost: publishedPosts[0] ?? null,
+		};
+	});
+}
+
 // Admin reorder view needs every post in the series, published or not.
 export async function readSeriesPostsAdmin(seriesId: string) {
 	const { supabase, error: authError } = await requireAdmin();
