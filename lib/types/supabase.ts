@@ -18,6 +18,8 @@ export type Database = {
           is_premium: boolean
           is_published: boolean
           title: string
+          series_id: string | null
+          series_order: number | null
         }
         Insert: {
           created_at?: string
@@ -27,6 +29,8 @@ export type Database = {
           is_premium?: boolean
           is_published?: boolean
           title: string
+          series_id?: string | null
+          series_order?: number | null
         }
         Update: {
           created_at?: string
@@ -36,6 +40,40 @@ export type Database = {
           is_premium?: boolean
           is_published?: boolean
           title?: string
+          series_id?: string | null
+          series_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "series"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      series: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          description?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          description?: string | null
+          created_at?: string
         }
         Relationships: []
       }
