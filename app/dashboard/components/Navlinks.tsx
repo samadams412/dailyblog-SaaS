@@ -1,6 +1,6 @@
 "use client";    
 import React from 'react'
-import {PersonIcon, ReaderIcon} from '@radix-ui/react-icons'
+import {PersonIcon, ReaderIcon, StackIcon} from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
@@ -13,6 +13,11 @@ export default function Navlinks() {
         href: "/dashboard",
         text:"Dashboard",
         Icon: ReaderIcon
+    },
+    {
+        href: "/dashboard/series",
+        text:"Series",
+        Icon: StackIcon
     },
     {
         href: "/dashboard/user",
