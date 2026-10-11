@@ -12,7 +12,7 @@ const DASHBOARD = "/dashboard";
 // Server Actions are callable directly over the network regardless of which
 // page defines them, so middleware's /dashboard route check does not protect
 // these — each admin-only action must check for itself.
-async function requireAdmin() {
+export async function requireAdmin() {
 	const supabase = await createSupabaseServerClient();
 	const {
 		data: { user },
