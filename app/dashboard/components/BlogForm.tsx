@@ -23,7 +23,7 @@ import {
 	StarIcon,
 } from "@radix-ui/react-icons";
 import { BsCopy, BsSave } from "react-icons/bs";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import MarkdownPreview from "@/components/markdown/MarkdownPreview";
@@ -31,6 +31,10 @@ import { BlogFormSchema, BlogFormSchemaType } from "../schema";
 import { toast } from "@/components/ui/use-toast";
 import { IBlogDetail } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
+import { createSeries, readAllSeries } from "@/lib/actions/series";
+import { Tables } from "@/lib/types/supabase";
+
+const NEW_SERIES_VALUE = "__new__";
 
 export default function BlogForm({
 	onHandleSubmit,
@@ -43,6 +47,17 @@ export default function BlogForm({
 	const [isPending, startTransition] = useTransition();
 	//toggle preview button for the current blog
 	const [isPreview, setIsPreview] = useState(false);
+	// series picker: existing series fetched for the dropdown, plus the
+	// inline "create a new series" fields shown when NEW_SERIES_VALUE is picked
+	const [seriesList, setSeriesList] = useState<Tables<"series">[]>([]);
+	const [newSeriesTitle, setNewSeriesTitle] = useState("");
+	const [newSeriesSlug, setNewSeriesSlug] = useState("");
+	const [newSeriesDescription, setNewSeriesDescription] = useState("");
+
+	useEffect(() => {
+		readAllSeries().then(({ data }) => setSeriesList(data ?? []));
+	}, []);
+
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof BlogFormSchema>>({
 		mode: "all",
@@ -55,20 +70,40 @@ export default function BlogForm({
 			image_url: defaultBlog?.image_url || "",
 			is_published: defaultBlog?.is_published ?? true,
 			is_premium: defaultBlog?.is_premium || false,
+			series_id: defaultBlog?.series_id ?? "",
 		},
 	});
 
 	// 2. Define a submit handler.
 	//Should probably rename these functions
 	function onSubmit(data: z.infer<typeof BlogFormSchema>) {
-		startTransition(() => {
+		startTransition(async () => {
+			if (data.series_id === NEW_SERIES_VALUE) {
+				if (!newSeriesTitle || !newSeriesSlug) {
+					toast({ title: "New series needs a title and a slug." });
+					return;
+				}
+				const result = JSON.parse(
+					await createSeries({
+						title: newSeriesTitle,
+						slug: newSeriesSlug,
+						description: newSeriesDescription || null,
+					})
+				);
+				if (result.error) {
+					toast({
+						title: "Failed to create series.",
+						description: result.error.message,
+					});
+					return;
+				}
+				data.series_id = result.data.id;
+			}
+			// the "None" option's value is "", but the series_id column is a
+			// nullable uuid, not an empty string
+			data.series_id = data.series_id || null;
 			onHandleSubmit(data);
 		});
-
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		// kinda a pain to set all this up for a form but atleast its type safe...
-		//console.log(data);
 	}
 	return (
 		<Form {...form}>
@@ -238,6 +273,52 @@ export default function BlogForm({
 							{/* Only render validation message if user is typing */}
 							{form.getFieldState("category").invalid &&
 								form.getValues().category && <FormMessage />}
+						</FormItem>
+					)}
+				/>
+
+				{/* Series picker: optional, independent of category */}
+				<FormField
+					control={form.control}
+					name="series_id"
+					render={({ field }) => (
+						<FormItem>
+							<FormControl>
+								<div className="p-2 w-full flex flex-col gap-2">
+									<select
+										{...field}
+										value={field.value || ""}
+										className="border rounded-md bg-secondary p-2 text-sm cursor-pointer w-full lg:w-1/2"
+									>
+										<option value="">No series</option>
+										{seriesList.map((s) => (
+											<option key={s.id} value={s.id}>
+												{s.title}
+											</option>
+										))}
+										<option value={NEW_SERIES_VALUE}>+ New series…</option>
+									</select>
+									{field.value === NEW_SERIES_VALUE && (
+										<div className="flex flex-col gap-2 w-full lg:w-1/2 border rounded-md p-3">
+											<Input
+												placeholder="Series title"
+												value={newSeriesTitle}
+												onChange={(e) => setNewSeriesTitle(e.target.value)}
+											/>
+											<Input
+												placeholder="Series slug (url-safe)"
+												value={newSeriesSlug}
+												onChange={(e) => setNewSeriesSlug(e.target.value)}
+											/>
+											<Textarea
+												placeholder="Short description (optional)"
+												value={newSeriesDescription}
+												onChange={(e) => setNewSeriesDescription(e.target.value)}
+											/>
+										</div>
+									)}
+								</div>
+							</FormControl>
 						</FormItem>
 					)}
 				/>
