@@ -88,6 +88,7 @@ export const defaultCreateBlog: IBlogDetail = {
 	category: "",
 	is_premium: false,
 	is_published: false,
+	series_id: null,
 	blog_content: {
 		created_at: "",
 		content: "",

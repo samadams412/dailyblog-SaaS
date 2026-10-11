@@ -22,6 +22,7 @@ export const BlogFormSchema = z.object({
     }),
     is_published: z.boolean(),
     is_premium: z.boolean(),
+    series_id: z.string().nullable().optional(),
     category: z.string().optional().refine((value) => {
         // Ensure the selected category is one of the allowed categories
         return allowedCategories.includes(value!);

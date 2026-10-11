@@ -6,6 +6,7 @@ export type IBlogDetail = {
 	is_premium: boolean;
 	is_published: boolean;
 	title: string;
+	series_id: string | null;
 	blog_content: {
 		blog_id: string;
 		content: string;
@@ -22,6 +23,7 @@ export type IBlog = {
 	is_premium: boolean;
 	content: string;
 	is_published: boolean;
+	series_id: string | null;
 };
 
 export type IUser = {
