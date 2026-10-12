@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { readSeriesById, readSeriesPostsAdmin } from "@/lib/actions/series";
+import SeriesEditForm from "./components/SeriesEditForm";
 import SeriesReorder from "./components/SeriesReorder";
 
 export default async function SeriesDetail({
@@ -18,12 +19,7 @@ export default async function SeriesDetail({
 
 	return (
 		<div className="space-y-5">
-			<div>
-				<h1 className="text-2xl font-bold">{series.title}</h1>
-				{series.description && (
-					<p className="text-muted-foreground">{series.description}</p>
-				)}
-			</div>
+			<SeriesEditForm series={series} />
 			<SeriesReorder seriesId={series.id} initialPosts={posts ?? []} />
 		</div>
 	);
