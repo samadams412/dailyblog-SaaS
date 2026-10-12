@@ -23,6 +23,66 @@ export async function readAllSeries() {
 	return supabase.from("series").select("*").order("title", { ascending: true });
 }
 
+export async function updateSeries(
+	id: string,
+	data: { title: string; slug: string; description: string | null }
+) {
+	const { supabase, error: authError } = await requireAdmin();
+	if (authError) {
+		return JSON.stringify({ data: null, error: authError, status: 0, statusText: "" });
+	}
+
+	const [current, slugOwner] = await Promise.all([
+		supabase.from("series").select("slug").eq("id", id).single(),
+		supabase.from("series").select("id").eq("slug", data.slug).neq("id", id).maybeSingle(),
+	]);
+	if (slugOwner.error) {
+		return JSON.stringify(slugOwner);
+	}
+	if (slugOwner.data) {
+		return JSON.stringify({
+			data: null,
+			error: {
+				message: `Slug "${data.slug}" is already used by another series.`,
+				details: "",
+				hint: "",
+				code: "SLUG_TAKEN",
+			},
+			status: 0,
+			statusText: "",
+		});
+	}
+
+	const result = await supabase.from("series").update(data).eq("id", id).select("*");
+	if (result.error) {
+		return JSON.stringify(result);
+	}
+	if (!result.data?.length) {
+		return JSON.stringify({
+			data: null,
+			error: {
+				message: "Series update was not saved. No rows were updated.",
+				details: "",
+				hint: "",
+				code: "NO_ROWS_UPDATED",
+			},
+			status: 0,
+			statusText: "",
+		});
+	}
+
+	const posts = await supabase.from("blog").select("id").eq("series_id", id);
+	revalidatePath(DASHBOARD);
+	revalidatePath("/dashboard/series/" + id);
+	revalidatePath("/series");
+	revalidatePath("/series/" + data.slug);
+	if (current.data?.slug && current.data.slug !== data.slug) {
+		revalidatePath("/series/" + current.data.slug);
+	}
+	posts.data?.forEach((post) => revalidatePath("/blog/" + post.id));
+	return JSON.stringify(result);
+}
+
 export async function updatePostSeries(
 	blogId: string,
 	seriesId: string | null,
